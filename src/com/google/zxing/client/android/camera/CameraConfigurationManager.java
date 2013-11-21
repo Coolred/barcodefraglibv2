@@ -22,13 +22,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 
 /**
  * A class which deals with reading, parsing, and setting the camera parameters which are used to
@@ -44,13 +41,11 @@ final class CameraConfigurationManager {
   private static final int MIN_PREVIEW_PIXELS = 470 * 320; // normal screen
   private static final int MAX_PREVIEW_PIXELS = 1280 * 800;
 
-  private final Context context;
   private Point screenResolution;
   private Point cameraResolution;
   private View view;
 
-  CameraConfigurationManager(Context context, View view) {
-    this.context = context;
+  CameraConfigurationManager(View view) {
     this.view = view;
   }
 

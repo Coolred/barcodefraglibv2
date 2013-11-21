@@ -29,7 +29,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 
-import com.abhi.barcode.frag.libv2.BarcodeFragment;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.client.android.camera.open.OpenCameraManager;
 
@@ -68,7 +67,7 @@ public final class CameraManager {
 
   public CameraManager(Activity captureFragment, View view) {
     this.context = captureFragment.getApplicationContext();
-    this.configManager = new CameraConfigurationManager(context,view);
+    this.configManager = new CameraConfigurationManager(view);
     this.captureFragment = captureFragment;
     previewCallback = new PreviewCallback(configManager);
   }
