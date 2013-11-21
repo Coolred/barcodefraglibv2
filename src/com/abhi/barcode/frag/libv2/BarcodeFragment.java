@@ -23,6 +23,7 @@ import java.util.Map;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,13 +35,14 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.AmbientLightManager;
-import com.google.zxing.client.android.BeepManager;
 import com.google.zxing.client.android.CaptureFragmentHandler;
 import com.google.zxing.client.android.FinishListener;
 import com.google.zxing.client.android.InactivityTimer;
@@ -74,7 +76,6 @@ public final class BarcodeFragment extends Fragment implements
 	private Map<DecodeHintType, ?> decodeHints;
 	private String characterSet;
 	private InactivityTimer inactivityTimer;
-	private BeepManager beepManager;
 	private AmbientLightManager ambientLightManager;
 
 	public ViewfinderView getViewfinderView() {
@@ -100,12 +101,23 @@ public final class BarcodeFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.capture, container, false);
+		FrameLayout frameLayout = new FrameLayout(getActivity());
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		frameLayout.setLayoutParams(layoutParams);
+		surfaceView = new SurfaceView(getActivity());
+		surfaceView.setLayoutParams(layoutParams);
+		viewfinderView = new ViewfinderView(getActivity());
+		viewfinderView.setLayoutParams(layoutParams);
+		frameLayout.addView(surfaceView);
+		frameLayout.addView(viewfinderView);
+		View v = frameLayout;
 		inactivityTimer = new InactivityTimer(this.getActivity());
-		beepManager = new BeepManager(this.getActivity());
 		ambientLightManager = new AmbientLightManager(this.getActivity());
 		return v;
 	}
+
+	SurfaceView surfaceView;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -119,18 +131,13 @@ public final class BarcodeFragment extends Fragment implements
 		// first launch. That led to bugs where the scanning rectangle was the
 		// wrong size and partially
 		// off screen.
-		cameraManager = new CameraManager(this.getActivity(),getView());
-
-		viewfinderView = (ViewfinderView) getView().findViewById(
-				R.id.viewfinder_view);
+		cameraManager = new CameraManager(this.getActivity(), getView());
 		viewfinderView.setCameraManager(cameraManager);
 
 		handler = null;
 
 		resetStatusView();
 
-		SurfaceView surfaceView = (SurfaceView) getView().findViewById(
-				R.id.preview_view);
 		SurfaceHolder surfaceHolder = surfaceView.getHolder();
 		if (hasSurface) {
 			// The activity was paused but not stopped, so the surface still
@@ -144,7 +151,6 @@ public final class BarcodeFragment extends Fragment implements
 			surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		}
 
-		beepManager.updatePrefs();
 		ambientLightManager.start(cameraManager);
 		inactivityTimer.onResume();
 		decodeFormats = null;
@@ -161,8 +167,7 @@ public final class BarcodeFragment extends Fragment implements
 		ambientLightManager.stop();
 		cameraManager.closeDriver();
 		if (!hasSurface) {
-			SurfaceView surfaceView = (SurfaceView) getView().findViewById(
-					R.id.preview_view);
+			SurfaceView surfaceView = this.surfaceView;
 			SurfaceHolder surfaceHolder = surfaceView.getHolder();
 			surfaceHolder.removeCallback(this);
 		}
@@ -189,7 +194,7 @@ public final class BarcodeFragment extends Fragment implements
 			}
 			if (savedResultToShow != null) {
 				Message message = Message.obtain(handler,
-						R.id.decode_succeeded, savedResultToShow);
+						IDS.id.decode_succeeded, savedResultToShow);
 				handler.sendMessage(message);
 			}
 			savedResultToShow = null;
@@ -236,7 +241,6 @@ public final class BarcodeFragment extends Fragment implements
 
 		boolean fromLiveScan = barcode != null;
 		if (fromLiveScan) {
-			beepManager.playBeepSoundAndVibrate();
 			drawResultPoints(barcode, scaleFactor, rawResult);
 		}
 
@@ -261,7 +265,7 @@ public final class BarcodeFragment extends Fragment implements
 		if (points != null && points.length > 0) {
 			Canvas canvas = new Canvas(barcode);
 			Paint paint = new Paint();
-			paint.setColor(getResources().getColor(R.color.result_points));
+			paint.setColor(Color.parseColor("#c099cc00"));
 			if (points.length == 2) {
 				paint.setStrokeWidth(4.0f);
 				drawLine(canvas, paint, points[0], points[1], scaleFactor);
@@ -294,7 +298,7 @@ public final class BarcodeFragment extends Fragment implements
 	private void handleDecodeInternally(Result rawResult,
 			ScanResult resultHandler, Bitmap barcode) {
 		viewfinderView.setVisibility(View.GONE);
-		if (this.resultHandler != null){
+		if (this.resultHandler != null) {
 			this.resultHandler.scanResult(resultHandler);
 		}
 	}
@@ -332,8 +336,8 @@ public final class BarcodeFragment extends Fragment implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				this.getActivity());
 		builder.setTitle(getString(R.string.app_name));
-		builder.setMessage(getString(R.string.msg_camera_framework_bug));
-		builder.setPositiveButton(R.string.button_ok,
+		builder.setMessage("Sorry, the Android camera encountered a problem. You may need to restart the device.");
+		builder.setPositiveButton("OK",
 				new FinishListener(this.getActivity()));
 		builder.setOnCancelListener(new FinishListener(this.getActivity()));
 		builder.show();
@@ -341,7 +345,7 @@ public final class BarcodeFragment extends Fragment implements
 
 	public void restartPreviewAfterDelay(long delayMS) {
 		if (handler != null) {
-			handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
+			handler.sendEmptyMessageDelayed(IDS.id.restart_preview, delayMS);
 		}
 		resetStatusView();
 	}

@@ -17,12 +17,10 @@
 package com.google.zxing.client.android;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.preference.PreferenceManager;
 
 import com.google.zxing.client.android.camera.CameraManager;
 
@@ -48,8 +46,6 @@ public final class AmbientLightManager implements SensorEventListener {
 
 	public void start(CameraManager cameraManager) {
 		this.cameraManager = cameraManager;
-		SharedPreferences sharedPrefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
 
 		SensorManager sensorManager = (SensorManager) context
 				.getSystemService(Context.SENSOR_SERVICE);

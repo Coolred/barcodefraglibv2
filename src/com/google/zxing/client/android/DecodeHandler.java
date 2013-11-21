@@ -27,7 +27,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.abhi.barcode.frag.libv2.BarcodeFragment;
-import com.abhi.barcode.frag.libv2.R;
+import com.abhi.barcode.frag.libv2.IDS;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -56,10 +56,10 @@ final class DecodeHandler extends Handler {
       return;
     }
     switch (message.what) {
-      case R.id.decode:
+      case IDS.id.decode:
         decode((byte[]) message.obj, message.arg1, message.arg2);
         break;
-      case R.id.quit:
+      case IDS.id.quit:
         running = false;
         Looper.myLooper().quit();
         break;
@@ -95,7 +95,7 @@ final class DecodeHandler extends Handler {
       long end = System.currentTimeMillis();
       Log.d(TAG, "Found barcode in " + (end - start) + " ms");
       if (handler != null) {
-        Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);
+        Message message = Message.obtain(handler, IDS.id.decode_succeeded, rawResult);
         Bundle bundle = new Bundle();
         bundleThumbnail(source, bundle);        
         message.setData(bundle);
@@ -103,7 +103,7 @@ final class DecodeHandler extends Handler {
       }
     } else {
       if (handler != null) {
-        Message message = Message.obtain(handler, R.id.decode_failed);
+        Message message = Message.obtain(handler, IDS.id.decode_failed);
         message.sendToTarget();
       }
     }

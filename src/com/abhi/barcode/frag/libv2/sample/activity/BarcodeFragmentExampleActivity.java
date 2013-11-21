@@ -2,7 +2,6 @@ package com.abhi.barcode.frag.libv2.sample.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
