@@ -36,7 +36,6 @@ import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 
 import com.abhi.barcode.frag.libv2.R;
-import com.abhi.barcode.frag.libv2.R.string;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -53,9 +52,10 @@ import com.google.zxing.common.BitMatrix;
  * This class does the work of decoding the user's request and extracting all the data
  * to be encoded in a barcode.
  *
- * @author dswitkin@google.com (Daniel Switkin) modified by Abhinava Srivastava
+ * @author dswitkin@google.com (Daniel Switkin) 
+ * @author Abhinava Srivastava
  */
-final class QRCodeEncoder {
+public final class QRCodeEncoder {
 
   private static final String TAG = QRCodeEncoder.class.getSimpleName();
 
@@ -70,7 +70,7 @@ final class QRCodeEncoder {
   private final int dimension;
   private final boolean useVCard;
 
-  QRCodeEncoder(Activity activity, Intent intent, int dimension, boolean useVCard) throws WriterException {
+  public QRCodeEncoder(Activity activity, Intent intent, int dimension, boolean useVCard) throws WriterException {
     this.activity = activity;
     this.dimension = dimension;
     this.useVCard = useVCard;
@@ -316,7 +316,7 @@ final class QRCodeEncoder {
     return values == null ? null : Arrays.asList(values);
   }
 
-  Bitmap encodeAsBitmap() throws WriterException {
+  public Bitmap encodeAsBitmap() throws WriterException {
     String contentsToEncode = contents;
     if (contentsToEncode == null) {
       return null;
