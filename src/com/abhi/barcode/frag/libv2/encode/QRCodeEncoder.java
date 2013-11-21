@@ -214,7 +214,7 @@ public final class QRCodeEncoder {
     }
   }
 
-  private void encodeQRCodeContents(Intent intent, String type) {
+  public void encodeQRCodeContents(Intent intent, String type) {
     if (type.equals(Contents.Type.TEXT)) {
       String data = intent.getStringExtra(Intents.Encode.DATA);
       if (data != null && data.length() > 0) {
