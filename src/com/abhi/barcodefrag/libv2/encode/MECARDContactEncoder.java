@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android.encode;
+package com.abhi.barcodefrag.libv2.encode;
 
 import android.telephony.PhoneNumberUtils;
 
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @author Sean Owen
  */
-final class MECARDContactEncoder extends ContactEncoder {
+public final class MECARDContactEncoder extends ContactEncoder {
 
   private static final Pattern RESERVED_MECARD_CHARS = Pattern.compile("([\\\\:;])");
   private static final Pattern NEWLINE = Pattern.compile("\\n");

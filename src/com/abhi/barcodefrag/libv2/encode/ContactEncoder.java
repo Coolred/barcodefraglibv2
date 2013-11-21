@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.zxing.client.android.encode;
+package com.abhi.barcodefrag.libv2.encode;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,13 +25,13 @@ import java.util.HashSet;
  *
  * @author Sean Owen
  */
-abstract class ContactEncoder {
+public abstract class ContactEncoder {
 
   /**
    * @return first, the best effort encoding of all data in the appropriate format; second, a
    *   display-appropriate version of the contact information
    */
-  abstract String[] encode(Iterable<String> names,
+  public abstract String[] encode(Iterable<String> names,
                            String organization,
                            Iterable<String> addresses,
                            Iterable<String> phones,
@@ -42,7 +42,7 @@ abstract class ContactEncoder {
   /**
    * @return null if s is null or empty, or result of s.trim() otherwise
    */
-  static String trim(String s) {
+  public static String trim(String s) {
     if (s == null) {
       return null;
     }
