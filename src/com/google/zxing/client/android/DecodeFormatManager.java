@@ -26,14 +26,14 @@ import android.content.Intent;
 import android.net.Uri;
 import com.google.zxing.BarcodeFormat;
 
-final class DecodeFormatManager {
+public final class DecodeFormatManager {
 
   private static final Pattern COMMA_PATTERN = Pattern.compile(",");
 
-  static final Collection<BarcodeFormat> PRODUCT_FORMATS;
-  static final Collection<BarcodeFormat> ONE_D_FORMATS;
-  static final Collection<BarcodeFormat> QR_CODE_FORMATS = EnumSet.of(BarcodeFormat.QR_CODE);
-  static final Collection<BarcodeFormat> DATA_MATRIX_FORMATS = EnumSet.of(BarcodeFormat.DATA_MATRIX);
+  public static final Collection<BarcodeFormat> PRODUCT_FORMATS;
+  public static final Collection<BarcodeFormat> ONE_D_FORMATS;
+  public static final Collection<BarcodeFormat> QR_CODE_FORMATS = EnumSet.of(BarcodeFormat.QR_CODE);
+  public static final Collection<BarcodeFormat> DATA_MATRIX_FORMATS = EnumSet.of(BarcodeFormat.DATA_MATRIX);
   static {
     PRODUCT_FORMATS = EnumSet.of(BarcodeFormat.UPC_A,
                                  BarcodeFormat.UPC_E,

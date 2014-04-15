@@ -2,6 +2,7 @@ package com.abhi.barcode.frag.libv2.sample.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -20,11 +21,12 @@ public class BarcodeFragmentExampleActivity extends FragmentActivity implements 
     	Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_barcode_fragment_example);
-//        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-//        brf = new BarcodeFragment();
-//        trx.add(R.id.testFragmentHolder, brf, "HOLDER");
-//        trx.commit();
-        brf = (BarcodeFragment) getSupportFragmentManager().findFragmentById(R.id.barcodeFragment);
+        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+        brf = new BarcodeFragment();
+        trx.add(R.id.testFragmentHolder, brf, "HOLDER");
+        trx.commit();
+//        brf = (BarcodeFragment) getSupportFragmentManager().findFragmentById(R.id.barcodeFragment);
+        brf.setDecodeFor(MODE.ONE_D_MODE);
         brf.setScanResultHandler(this);
     }
 

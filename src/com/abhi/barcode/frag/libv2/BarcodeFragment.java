@@ -44,6 +44,7 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.AmbientLightManager;
 import com.google.zxing.client.android.CaptureFragmentHandler;
+import com.google.zxing.client.android.DecodeFormatManager;
 import com.google.zxing.client.android.FinishListener;
 import com.google.zxing.client.android.InactivityTimer;
 import com.google.zxing.client.android.ViewfinderView;
@@ -117,6 +118,27 @@ public final class BarcodeFragment extends Fragment implements
 		return v;
 	}
 
+	public void setDecodeFor(Collection<BarcodeFormat> decodeFormat) {
+		this.decodeFormats = decodeFormat;
+	}
+
+	public void setDecodeFor(IScanResultHandler.MODE decodeMode){
+		switch (decodeMode) {
+		case PRODUCT_MODE:
+			this.decodeFormats =  DecodeFormatManager.PRODUCT_FORMATS;
+			break;
+		case QR_CODE_MODE:
+			 this.decodeFormats =  DecodeFormatManager.QR_CODE_FORMATS;
+			break;
+		case DATA_MATRIX_MODE:
+			this.decodeFormats =  DecodeFormatManager.DATA_MATRIX_FORMATS;
+			break;
+		case ONE_D_MODE:
+			 this.decodeFormats =  DecodeFormatManager.ONE_D_FORMATS;
+			 break;
+		}
+	}
+
 	SurfaceView surfaceView;
 
 	@SuppressWarnings("deprecation")
@@ -153,7 +175,6 @@ public final class BarcodeFragment extends Fragment implements
 
 		ambientLightManager.start(cameraManager);
 		inactivityTimer.onResume();
-		decodeFormats = null;
 		characterSet = null;
 	}
 
@@ -337,8 +358,7 @@ public final class BarcodeFragment extends Fragment implements
 				this.getActivity());
 		builder.setTitle(getString(R.string.app_name));
 		builder.setMessage("Sorry, the Android camera encountered a problem. You may need to restart the device.");
-		builder.setPositiveButton("OK",
-				new FinishListener(this.getActivity()));
+		builder.setPositiveButton("OK", new FinishListener(this.getActivity()));
 		builder.setOnCancelListener(new FinishListener(this.getActivity()));
 		builder.show();
 	}

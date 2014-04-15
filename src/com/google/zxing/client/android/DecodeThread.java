@@ -67,6 +67,7 @@ final class DecodeThread extends Thread {
 			decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
 			decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
 		}
+		
 		hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
 
 		if (characterSet != null) {
