@@ -60,6 +60,7 @@ final class CameraConfigurationManager {
 		int height = view.getHeight();
 		// We're landscape-only, and have apparently seen issues with display
 		// thinking it's portrait
+		
 		// when waking from sleep. If it's not landscape, assume it's mistaken
 		// and reverse them:
 		// if (width < height) {
@@ -92,6 +93,7 @@ final class CameraConfigurationManager {
 					"In camera config safe mode -- most settings will not be honored");
 		}
 
+		
 		List<int[]> supportedPreviewFpsRanges = parameters
 				.getSupportedPreviewFpsRange();
 		int[] minimumPreviewFpsRange = supportedPreviewFpsRanges.get(0);
